@@ -11,6 +11,7 @@ use Miste\scoreboardspe\API\{
     Scoreboard, ScoreboardDisplaySlot, ScoreboardSort, ScoreboardAction
 };
 use pocketmine\utils\TextFormat;
+use metowa1227\moneysystem\api\core\API;
 
 class EventListener implements Listener
 {
@@ -23,6 +24,7 @@ class EventListener implements Listener
         $y = floor($player->getY());
         $z = floor($player->getZ());
         $data = date("G:i");
+        $money = API::getInstance()->get($player);
         
         $scoreboard = new Scoreboard(Main::$instance->getServer()->getPluginManager()->getPlugin("ScoreboardsPE")->getPlugin(), TextFormat::GREEN . "Komugi LIFE", ScoreboardAction::CREATE);
         $scoreboard->create(ScoreboardDisplaySlot::SIDEBAR, ScoreboardSort::DESCENDING);
