@@ -10,6 +10,7 @@ use pocketmine\scheduler\Task;
 use Miste\scoreboardspe\API\{
     Scoreboard, ScoreboardDisplaySlot, ScoreboardSort, ScoreboardAction
 };
+use metowa1227\moneysystem\api\core\API;
 
 class UpdateScoreboardTask extends Task
 {
@@ -27,16 +28,19 @@ class UpdateScoreboardTask extends Task
 
     public function onRun(int $currentTick)
     {
-        $this->scoreboard->setLine(1, $this->randomColor() . "  Name " . $this->player->getName() . "     ");
-        $this->scoreboard->setLine(2, $this->randomColor() . "  Online " . count(Main::$instance->getServer()->getOnlinePlayers()) . " / " . Main::$instance->getServer()->getMaxPlayers() . " ");
-        $this->scoreboard->setLine(4, $this->randomColor() . "  Ping " . $this->player->getPing() . "ms     ");
-        $this->scoreboard->setLine(5, $this->randomColor() . "  TPS " . Main::$instance->getServer()->getTicksPerSecond() . "     ");
-        $this->scoreboard->setLine(6, "\n");
-        $this->scoreboard->setLine(7, $this->randomColor() . "     > Dev: InkoHX <");
-    }
-
-    private function randomColor(): string
-    {
-        return "§" . mt_rand(1, 9);
+        $scoreboard = $this->scoreboard;
+        $ping = $this->player->getPing();
+        $c = ($ping < 150 ? "§a" : ($ping < 250 ? "§6" : "§4"));
+        $x = floor($this->player->getX());
+        $y = floor($this->player->getY());
+        $z = floor($this->player->getZ());
+        $data = date("G:i");
+        $money = API::getInstance()->get($this->player);
+        
+        $scoreboard->setLine(1,"Name: {$this->player->getName()}");
+        $scoreboard->setLine(2,"X:{$x} Y:{$y} Z: {$z}");
+        $scoreboard->setLine(3, "Time: {$data}");
+        $scoreboard->setLine(4, "Money: {$money}");
+        $scoreboard->setLine(5, "Ping: {$c}{$ping}");
     }
 }
