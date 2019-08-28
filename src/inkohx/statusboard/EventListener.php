@@ -17,15 +17,22 @@ class EventListener implements Listener
     public function onJoin(PlayerJoinEvent $event)
     {
         $player = $event->getPlayer();
-        $scoreboard = new Scoreboard(Main::$instance->getServer()->getPluginManager()->getPlugin("ScoreboardsPE")->getPlugin(), TextFormat::GREEN . "      STATUSBOARD     ", ScoreboardAction::CREATE);
+        $ping = $player->getPing();
+        $c = ($ping < 150 ? "§a" : ($ping < 250 ? "§6" : "§4"));
+        $x = floor($player->getX());
+        $y = floor($player->getY());
+        $z = floor($player->getZ());
+        $data = date("G:i");
+        
+        $scoreboard = new Scoreboard(Main::$instance->getServer()->getPluginManager()->getPlugin("ScoreboardsPE")->getPlugin(), TextFormat::GREEN . "Komugi LIFE", ScoreboardAction::CREATE);
         $scoreboard->create(ScoreboardDisplaySlot::SIDEBAR, ScoreboardSort::DESCENDING);
         $scoreboard->addDisplay($player);
-        $scoreboard->setLine($player, 1, TextFormat::GREEN . "Name " . $player->getName() . "     ");
-        $scoreboard->setLine($player, 2, TextFormat::GREEN . "Online " . count(Main::$instance->getServer()->getOnlinePlayers()) . " / " . Main::$instance->getServer()->getMaxPlayers() . "     ");
-        $scoreboard->setLine($player, 4, TextFormat::GREEN . "Ping " . $player->getPing() . "ms     ");
-        $scoreboard->setLine($player, 5, TextFormat::GREEN . "TPS " . Main::$instance->getServer()->getTicksPerSecond() . "     ");
-        $scoreboard->setLine($player, 6, "\n");
-        $scoreboard->setLine($player, 7, TextFormat::GREEN . "     > Dev: InkoHX <");
+        $scoreboard->setLine(1,"Name: {$player->getName()}");
+        $scoreboard->setLine(2,"X:{$x} Y:{$y} Z: {$z}");
+        $scoreboard->setLine(3, "Time: {$data}");
+        $scoreboard->setLine(4, "Money: {$money}");
+        $scoreboard->setLine(5, "Ping: {$c}{$ping}");
+        
         Main::$instance->getScheduler()->scheduleRepeatingTask(new UpdateScoreboardTask($scoreboard, $player), 40);
     }
 }
