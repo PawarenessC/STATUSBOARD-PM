@@ -4,5 +4,6 @@ api: 3.0.0
 version: 1.0.0
 prefix: STATUSBOARD
 author: InkoHX
+authors: [InkoHX,PawarenessC]
 softdepend:
 - ScoreboardsPE
